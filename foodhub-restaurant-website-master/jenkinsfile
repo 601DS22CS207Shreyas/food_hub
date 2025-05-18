@@ -13,6 +13,15 @@ pipeline {
             }
         }
 
+        stage('Debug Docker Access') {
+            steps {
+                sh 'echo "Running as user: $(id -un)"'
+                sh 'echo "Groups: $(groups)"'
+                sh 'echo "Docker Access Test:"'
+                sh 'docker ps'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
