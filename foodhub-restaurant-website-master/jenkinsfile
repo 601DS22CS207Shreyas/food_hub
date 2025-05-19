@@ -9,6 +9,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
+                // checking out
                 checkout scm
             }
         }
