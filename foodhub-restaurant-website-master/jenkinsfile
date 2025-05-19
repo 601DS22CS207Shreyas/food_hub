@@ -13,16 +13,8 @@ pipeline {
             }
         }
 
-        stage('Check Workspace') {
-            steps {
-                echo 'Listing files in workspace to check Dockerfile presence'
-                sh 'ls -la'
-            }
-        }
-
         stage('Debug Docker Access') {
             steps {
-                echo 'Checking Docker access and user permissions'
                 sh 'echo "Running as user: $(id -un)"'
                 sh 'echo "Groups: $(groups)"'
                 sh 'echo "Docker Access Test:"'
@@ -33,14 +25,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    try {
-                        echo "Building Docker image: ${DOCKER_IMAGE}:latest"
-                        def customImage = docker.build("${DOCKER_IMAGE}:latest")
-                        echo "Successfully built image: ${customImage.id}"
-                    } catch (Exception e) {
-                        echo "Docker build failed: ${e}"
-                        error("Aborting pipeline due to Docker build failure.")
-                    }
+                    docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
@@ -57,8 +42,8 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
+                sh 'kubectl apply -f k8s-deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
             }
         }
     }
