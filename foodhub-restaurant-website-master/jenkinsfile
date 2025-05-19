@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'shreyasc19/foodhub:latest'
+        DOCKER_IMAGE = 'shreyasc19/foodhub'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
     }
 
