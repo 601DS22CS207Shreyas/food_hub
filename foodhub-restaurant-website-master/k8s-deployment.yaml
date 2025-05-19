@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: foodhub-container
-        image: shreyasc19/foodhub:latest
+        image: shreyasc18/foodhub:latest
         ports:
         - containerPort: 80
 ---
