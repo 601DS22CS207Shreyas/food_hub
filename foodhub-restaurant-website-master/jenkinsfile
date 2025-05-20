@@ -6,12 +6,7 @@ pipeline {
         TAG = 'latest'
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/601DS22CS207Shreyas/food_hub.git'
-            }
-        }
+    
 
         stage('Build Docker Image') {
             steps {
