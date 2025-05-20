@@ -1,0 +1,35 @@
+# Ignore version control
+.git
+.gitignore
+
+# Jenkins-related
+Jenkinsfile
+
+# Kubernetes configs
+k8s/
+*.yaml
+*.yml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Archives and compressed files
+*.zip
+*.tar
+*.tar.gz
+
+# Temporary/OS files
+*.swp
+*.bak
+*~
+
+# Node/npm cache (in case you ever add packages)
+node_modules/
+
+# Environment files (for security)
+.env
+.env.*
