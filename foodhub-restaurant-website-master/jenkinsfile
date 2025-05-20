@@ -2,42 +2,41 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
-        DOCKER_IMAGE = 'shreyasc18/foodhub:latest'
+        IMAGE_NAME = 'shreyasc19/foodhub-image'
+        TAG = 'latest'
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/601DS22CS207Shreyas/food_hub.git'
-            }
-        }
-
-        stage('Login to DockerHub') {
-            steps {
-                bat "echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin"
+                git 'https://github.com/601DS22CS207Shreyas/food_hub.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat "docker build -t %DOCKER_IMAGE% ."
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Docker Login') {
             steps {
-                bat "docker push %DOCKER_IMAGE%"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                }
             }
         }
-    }
 
-    post {
-        success {
-            echo '✅ Docker image built and pushed successfully!'
+        stage('Push Image to Docker Hub') {
+            steps {
+                sh 'docker push $IMAGE_NAME:$TAG'
+            }
         }
-        failure {
-            echo '❌ Pipeline failed.'
-        }
+        stage('Deploy to Kubernetes') {
+            steps {
+        sh 'kubectl apply -f k8s-deployment.yaml'
+        sh 'kubectl apply -f service.yaml'
+          }
+       }
     }
 }
