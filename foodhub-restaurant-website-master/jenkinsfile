@@ -36,8 +36,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 dir('foodhub-restaurant-website-master'){
-                bat 'kubectl apply -f k8s\\deployment.yaml'
-                bat 'kubectl apply -f k8s\\service.yaml'
+                bat 'kubectl --kubeconfig=C:\\Users\\91636\\.kube\\config apply -f k8s\\deployment.yaml'
+                bat 'kubectl --kubeconfig=C:\\Users\\91636\\.kube\\config apply -f k8s\\service.yaml'
                 }
             }
         }
