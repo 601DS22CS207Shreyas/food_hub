@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: foodhub-service
+  annotations:
+    logging: "true"
 spec:
   selector:
     app: foodhub-app
@@ -10,6 +12,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 32000metadata:
-  annotations:
-    logging: "true"
+      nodePort: 32000
